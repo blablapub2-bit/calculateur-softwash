@@ -21,10 +21,12 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - uses: android-actions/setup-android@v3
-
-      - name: Installer Android SDK
-        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Préparer le SDK Android
+        run: |
+          echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> "$GITHUB_ENV"
+          echo "/usr/local/lib/android/sdk/cmdline-tools/16.0/bin" >> "$GITHUB_PATH"
+          yes | sdkmanager --licenses || true
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
       - name: Compiler l'application
         run: gradle --no-daemon assembleDebug
